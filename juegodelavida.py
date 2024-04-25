@@ -5,35 +5,32 @@ import time
 
 pygame.init()
 #parametros de la pantalla + inicio de esta
-width=1000
-height=1000
+width=750
+height=750
 pantalla = pygame.display.set_mode((height,width))
 #color de fondo
-bgcolor=25, 25, 25
+bgcolor=102,204,0
 pantalla.fill(bgcolor)
 #Cuantas celdas queremos
-nhc=50
-nvc=50
+nhc=25
+nvc=25
 #Tamaño de la celda
 dimcw = width / nhc
 dimch = height / nvc
 #Celdas Vivas=1 Muertas=0
 estadojuego = np.zeros((nhc, nvc))
 
-#Automata
-estadojuego[21,21] =1
-estadojuego[22,22] =1
-estadojuego[22,23] =1
-estadojuego[21,23] =1
-estadojuego[20,23] =1
+#Inicio en rango random
+estadojuego=np.random.choice([0,1], size=(nhc,nvc))
 
 #Ejecutar codigo
-while True:
+ini=True
+while ini:  
     #Copiamos el estado del juego, para usarlo sin modificarlo
     estadojuego_nuevo=np.copy(estadojuego)
 
     pantalla.fill(bgcolor)
-    time.sleep(0.2)
+    time.sleep(0.1)
     
     #Configuracion de cada una de las celdas
     for y in range(0,nhc):
@@ -66,10 +63,15 @@ while True:
                     ((x+1) * dimcw, (y+1) * dimch),
                     ((x) * dimcw, (y+1) * dimch)]
             if estadojuego_nuevo[x,y]==0:
-                pygame.draw.polygon(pantalla, (128, 128, 128), poly, 1)
+                pygame.draw.polygon(pantalla, (102,255,0), poly, 1)
             else:
-                pygame.draw.polygon(pantalla, (255, 255, 255), poly, 0)
+                pygame.draw.polygon(pantalla, (102,0,102), poly, 0)
 
     estadojuego=np.copy(estadojuego_nuevo)
 
     pygame.display.flip()
+    #Cerrar ventana
+    for cerrar in pygame.event.get():
+        if cerrar.type==pygame.QUIT:
+            ini=False
+pygame.quit()
